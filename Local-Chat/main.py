@@ -267,25 +267,26 @@ class Client():
 
 
 class Start():
-    def main_start():
+    def main_start(self):
 
-
+        print("function called successfully")
         #### read open ports ####
         list_of_ports = []
 
-        for i in range(65536):
-            s = socket.socket()
-            s.settimeout(1)
-            try:
-                s.connect(('127.0.0.1', i))
-            except socket.error:
-                pass
-            else:
-                s.close
-                list_of_ports.append(i)
+        # for i in range(65536):
+        #     print(i)
+        #     s = socket.socket()
+        #     s.settimeout(1)
+        #     try:
+        #         s.connect(('127.0.0.1', i))
+        #     except socket.error:
+        #         pass
+        #     else:
+        #         s.close
+        #         list_of_ports.append(i)
         #########################
 
-        os.system("clear")
+        os.system("cls")
         tprint("Anon    chat")
 
 
@@ -298,51 +299,52 @@ class Start():
             ip_adr = "localhost"
             nickname = None
             while not key_is_correct:
-                os.system("clear")
+                os.system("cls")
                 tprint("Anon    chat")
                 private_key = "?" + ''.join(random.choice(characters) for i in range(6))
                 print(f"checking key {private_key} for unic.")
                 time.sleep(0.75)
-                os.system("clear")
+                os.system("cls")
                 tprint("Anon    chat")
                 print(f"checking key {private_key} for unic..")
                 time.sleep(0.75)
-                os.system("clear")
+                os.system("cls")
                 tprint("Anon    chat")
                 print(f"checking key {private_key} for unic...")
                 time.sleep(0.75)
-                
+
                 hash_object = hashlib.sha256(bytes(private_key.encode('utf-8')))
                 hash_dig = hash_object.hexdigest()
                 numbers = ''.join(i for i in hash_dig if not i.isalpha())
                 port_for_key = int(sum(list(map(int, numbers)))**1.64)
+                print("Port_for_key: " + (str(port_for_key)))
                 time.sleep(0.3)
 
                 if port_for_key not in list_of_ports or port_for_key > 2000:
                     try:
-                        
-                        os.system("clear")
+
+                        os.system("cls")
                         tprint("Anon    chat")
                         print(f"trying to create server by private key {private_key}")
                         server = Server(ip_adr, port_for_key, private_key, nickname)
                         server.runServer()
-                        
-                        
+
+
                         key_is_correct = True
                     except:
 
                         key_is_correct = False
-            
+
 
 
         elif command == "C":
             queue = multiprocessing.Queue()
             queue_send = multiprocessing.Queue()
-            
+
             ip_adr = "localhost"
 
             private_key_for_client = input("Enter the key: ")
-            
+
             hash_object = hashlib.sha256(bytes(private_key_for_client.encode('utf-8')))
             hash_dig = hash_object.hexdigest()
             numbers = ''.join(i for i in hash_dig if not i.isalpha())
@@ -361,27 +363,28 @@ class Start():
             isConnected = client.connect_to_server()
 
             if isConnected:
-                
+
 
                 client.runClient()
-                
 
-                
-                
+
+
+
             else:
                 print("Error while connecting to server")
                 exit()
 
         else:
             print("wrong input, restarting software")
-            Start.main_start()
+            Start.main_start(self)
 
 
 
 if __name__ == "__main__":
-    
-    Start.main_start()
-    
+    print("Sciprt started")
+    start = Start()
+    start.main_start()
+    print("Started main_start()")
     #TODO: 1. check users by ip
     #      2. create ports for chat by some hash func
    
